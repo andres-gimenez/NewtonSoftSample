@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace TextJSonSample
 {
     public class DataStructure
     {
+        [JsonPropertyNameAttribute("FirstName")]
         public string Name { get; set; }
         public List<int> Identifiers { get; set; }
 
