@@ -7,27 +7,29 @@ namespace NewtonSoftSample
 {
     internal class Program
     {
-        const string filePath = @".\json.txt";
-
-        public static void Serialize(object obj)
+        public static void Serialize<T>(T obj, string path)
         {
             var serializer = new JsonSerializer();
 
-            using (var sw = new StreamWriter(filePath))
-            using (JsonWriter writer = new JsonTextWriter(sw))
+            using (var sw = new StreamWriter(path))
             {
-                serializer.Serialize(writer, obj);
+                using (JsonWriter writer = new JsonTextWriter(sw))
+                {
+                    serializer.Serialize(writer, obj);
+                }
             }
         }
 
-        public static object Deserialize(string path)
+        public static T Deserialize<T>(string path)
         {
             var serializer = new JsonSerializer();
 
             using (var sw = new StreamReader(path))
-            using (var reader = new JsonTextReader(sw))
             {
-                return serializer.Deserialize(reader);
+                using (var reader = new JsonTextReader(sw))
+                {
+                    return serializer.Deserialize<T>(reader);
+                }
             }
         }
 
@@ -44,14 +46,27 @@ namespace NewtonSoftSample
             Console.WriteLine();
             Console.WriteLine(data);
 
-            Serialize(data);
+            Console.WriteLine(data.Name);
 
-            var deserialized = Deserialize(filePath);
+            Serialize(data, "./data1.json");
+
+            var deserialized = Deserialize<DataStructure>("./data1.json");
 
             Console.WriteLine("Deserialized (json) string:");
             Console.WriteLine("---------------------------");
             Console.WriteLine();
             Console.WriteLine(deserialized);
+            Console.WriteLine(deserialized.Name);
+
+            var persona = new Persona
+            {
+                Name = "Henry",
+                Age = 32
+            };
+
+            Serialize(persona, "./data2.json");
+
+            var deserializedPersona = Deserialize<Persona>("./data2.json");
         }
     }
 }
