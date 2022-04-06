@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TextJSonSample
+﻿namespace TextJSonSample
 {
-    public enum Color
+    public enum Color : short
     {
-        Rojo,
-        Azul,
-        Verde,
-        Gris
+        Rojo = 10,
+        Azul = 20,
+        Verde = 30,
+        Gris = 40
     }
 }
