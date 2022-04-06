@@ -60,9 +60,9 @@ namespace TextJSonSample
             Console.WriteLine("Object before serialization:");
             Console.WriteLine("----------------------------");
             Console.WriteLine();
-            Console.WriteLine(data);
+            Console.WriteLine(cliente);
 
-            await SerializeAsync(data, "./Cliente.json");
+            await SerializeAsync(cliente, "./Cliente.json");
 
             var deserialized = await Deserialize<Cliente>("./Cliente.json");
 
