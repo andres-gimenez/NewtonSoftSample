@@ -8,14 +8,13 @@ namespace TextJSonSample
 {
     internal class Program
     {
-        public static async Task Serialize<T>(T obj, string path)
+        public static async Task SerializeAsync<T>(T obj, string path)
         {
             string jsonString = JsonSerializer.Serialize(obj);
 
             using FileStream createStream = File.Create(path);
             await JsonSerializer.SerializeAsync<T>(createStream, obj);
             await createStream.DisposeAsync();
-
 
             //File.WriteAllText(filePath, jsonString);
         }
@@ -31,20 +30,41 @@ namespace TextJSonSample
 
         static async Task Main(string[] args)
         {
-            var data = new DataStructure
+            var cliente = new Cliente
             {
-                Name = "Henry",
-                Identifiers = new List<int> { 1, 2, 3, 4 }
+                IdCliente = Guid.NewGuid(),
+                Nombre = "Pepe",
+                Apellidos = "Pena"
             };
+
+            cliente.Vehiculos = new List<Vehiculo>(
+                    new[] {
+                        new Vehiculo
+                        {
+                            IdVehiculo = Guid.NewGuid(),
+                            Matricula = "XXXX-XXX",
+                            Modelo = "Porche",
+                            Color = Color.Rojo,
+                            Cliente = cliente
+                        },
+                        new Vehiculo
+                        {
+                            IdVehiculo = Guid.NewGuid(),
+                            Matricula = "XXXX-XXX",
+                            Modelo = "Mercedes",
+                            Color = Color.Gris,
+                            Cliente = cliente
+                        },
+                });
 
             Console.WriteLine("Object before serialization:");
             Console.WriteLine("----------------------------");
             Console.WriteLine();
             Console.WriteLine(data);
 
-            await Serialize(data, "./fichero.json");
+            await SerializeAsync(data, "./Cliente.json");
 
-            var deserialized = await Deserialize<DataStructure>("./fichero.json");
+            var deserialized = await Deserialize<Cliente>("./Cliente.json");
 
             Console.WriteLine("Deserialized (json) string:");
             Console.WriteLine("---------------------------");
